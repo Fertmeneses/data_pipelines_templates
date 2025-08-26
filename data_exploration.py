@@ -54,3 +54,26 @@ def explore_LB(
         plt.xlim(x_lim)
 
 # ===================
+# Load dataset and get basic information:
+
+def load_dataset(
+    dataset_file,id_col=None,
+    ):
+    """
+    Load a dataset and identify the id column, if any.
+    The output is the dataset. If {id_col} is provided, then the output dataset
+    and id column are provided as separate variables.
+    """
+    # Load original datasets:
+    df = pd.read_csv(dataset_file)
+    # Print some data examples:
+    display(df.head())
+    # Separate id column if required:
+    if id_col is not None:
+        ids = df[id_col]
+        df = df.drop(columns=[id_col])
+    print('_'*40+'\n\nInformation about dataset:\n')
+    df.info()
+    return df, ids if id_col is not None else df
+
+# ===================
