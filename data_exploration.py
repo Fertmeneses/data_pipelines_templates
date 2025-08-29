@@ -404,3 +404,21 @@ def bin_feature(
             if drop_original:
                 dataset.drop(columns=orig_feature, inplace=True)
     return datasets
+
+# ===================
+
+def group_feature(
+    orig_feature,datasets,mapping_group,drop_original=False
+    ):
+    """
+    Groups a feature according to a predefined map.
+    """
+    for df in datasets:
+        if orig_feature in df and f'{orig_feature}_group' not in df:
+            # Apply mapping
+            df[f'{orig_feature}_group'] = df[orig_feature].map(mapping_group)
+            if drop_original:
+                df.drop(columns=orig_feature, inplace=True)
+    return datasets
+
+# ===================
