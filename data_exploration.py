@@ -390,3 +390,17 @@ def explore_features(
                 print('(Not suitable for a table)')
 
 # ===================
+
+def bin_feature(
+    orig_feature,datasets,bins,drop_original=False
+    ):
+    """
+    Bin a feature into intervals.
+    """
+    for dataset in datasets:
+        if orig_feature in dataset and f'{orig_feature}_range' not in dataset:
+            intervals = pd.cut(dataset[orig_feature].astype(int), bins, include_lowest=True)
+            dataset[f'{orig_feature}_range'] = pd.factorize(intervals, sort=True)[0]+1
+            if drop_original:
+                dataset.drop(columns='age', inplace=True)
+    return datasets
