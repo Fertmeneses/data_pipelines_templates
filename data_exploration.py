@@ -422,3 +422,17 @@ def group_feature(
     return datasets
 
 # ===================
+
+def make_boolean_feature(
+    orig_feature,ref_value,datasets,drop_original=False
+    ):
+    """
+    Make a feature of boolean type, by checking if the value of the feature
+    is equal to the reference value.
+    """
+    for df in datasets:
+        if orig_feature in df and f"{orig_feature}_is_{ref_value}" not in df:
+            df[f"{orig_feature}_is_{ref_value}"] = (df[orig_feature] == ref_value).astype(int)
+            if drop_original:
+                df.drop(columns=orig_feature, inplace=True)
+    return datasets
