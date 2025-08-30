@@ -436,3 +436,22 @@ def make_boolean_feature(
             if drop_original:
                 df.drop(columns=orig_feature, inplace=True)
     return datasets
+
+# ===================
+
+def make_num_boundary_boolean(
+    orig_feature,boundary_value,datasets,drop_original=False
+    ):
+    """
+    Make a numeric feature boolean based on the a numerical boundary (smaller or greater).
+    """
+    # Set extension name:
+    extension = '_is_positive' if boundary_value == 0 else '_above_boundary'
+    for df in datasets:
+        if orig_feature in df and f"{orig_feature}{extension}" not in df:
+            df[f"{orig_feature}{extension}"] = (df[orig_feature] >= 0).astype(int)
+            if drop_original:
+                df.drop(columns=orig_feature, inplace=True)
+    return datasets
+
+# ===================
