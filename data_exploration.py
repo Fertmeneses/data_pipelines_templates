@@ -455,3 +455,21 @@ def make_num_boundary_boolean(
     return datasets
 
 # ===================
+
+def make_log_feature(
+    orig_feature,datasets,drop_original=False
+    ):
+    """
+    Transform a numeric feature into its logarithmic version. All zero or negative values
+    are assigned as -1.
+    """
+    for df in datasets:
+        if orig_feature in df and f"{orig_feature}_log" not in df:
+            df[f"{orig_feature}_log"] = -1.0  # initialize with -1
+            df.loc[df[orig_feature] > 0, f"{orig_feature}_log"] = np.log(
+                df.loc[df[orig_feature] > 0, orig_feature])
+            if drop_original:
+                df.drop(columns=orig_feature, inplace=True)
+    return datasets
+
+# ===================
