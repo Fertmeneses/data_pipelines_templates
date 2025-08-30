@@ -473,3 +473,26 @@ def make_log_feature(
     return datasets
 
 # ===================
+
+def limit_min_max_values(
+    orig_feature,datasets,min_bound=None,max_bound=None,drop_original=False
+    ):
+    """
+    Limits the value of the feature within the min and max boundaries, if provided.
+    Any value outside the boundaries is reassigned as the closest boundary value.
+    """
+    # Sanity check for boundary conditions:
+    if (min_bound is not None) and (max_bound is not None) and (min_bound >= max_bound):
+        print('Error: min_bound must be lower than max_bound if both are provided.')
+        return datasets
+        
+    for df in datasets:
+        if orig_feature in df and f"{orig_feature}_bounded" not in df:
+            # Clip with whichever bounds are provided (None is okay)
+            df[f"{orig_feature}_bounded"] = df[orig_feature].clip(
+                lower=min_bound, upper=max_bound)
+            if drop_original:
+                df.drop(columns=orig_feature, inplace=True)
+    return datasets
+
+# ===================
