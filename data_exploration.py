@@ -449,7 +449,7 @@ def make_num_boundary_boolean(
     extension = '_is_positive' if boundary_value == 0 else '_above_boundary'
     for df in datasets:
         if orig_feature in df and f"{orig_feature}{extension}" not in df:
-            df[f"{orig_feature}{extension}"] = (df[orig_feature] >= 0).astype(int)
+            df[f"{orig_feature}{extension}"] = (df[orig_feature] >= boundary_value).astype(int)
             if drop_original:
                 df.drop(columns=orig_feature, inplace=True)
     return datasets
